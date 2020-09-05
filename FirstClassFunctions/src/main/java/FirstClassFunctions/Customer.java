@@ -15,66 +15,40 @@ public class Customer {
 	
 	public Customer(){}
 
-	public static List<String> getEnabledCustomerField(String fieldName){
-		ArrayList<String> outList = new ArrayList<>();
+	public static <B> List<B> getEnabledCustomerField(
+			Function1<Customer, B> function
+	){
+		ArrayList<B> outList = new ArrayList<>();
 		for(Customer customer : Customer.allCustomers){
 			if(customer.enabled){
-				if(fieldName == "name"){
-					outList.add(customer.name);
-				}else if(fieldName == "state"){
-					outList.add(customer.state);
-				}else if(fieldName == "primaryContact"){
-					outList.add(customer.primaryContact);
-				}else if(fieldName == "domain"){
-					outList.add(customer.domain);
-				}else if(fieldName == "address"){
-					outList.add(customer.address);
-				}else{
-					throw new IllegalArgumentException("Unknow field");
-				}
+				outList.add(function.call(customer));
 			}
 		}
 		return outList;
+	}
+
+	public static List<String> getEnabledCustomersAddress(){
+		return Customer.getEnabledCustomerField(new CustomerAddress());
 	}
 	
 	public static List<String> getEnabledCustomersNames(){
-		ArrayList<String> outList = new ArrayList<String>();
-		for(Customer customer : Customer.allCustomers) {
-			if(customer.enabled){
-				outList.add(customer.name);
-			}
-		}
-		return outList;
+		return Customer.getEnabledCustomerField(new CustomerName());
 	}
 	
 	public static List<String> getEnabledCustomersStates(){
-		ArrayList<String> outList = new ArrayList<String>();
-		for(Customer customer : Customer.allCustomers) {
-			if(customer.enabled){
-				outList.add(customer.state);
-			}
-		}
-		return outList;
+		return Customer.getEnabledCustomerField(new CustomerState());
 	}
 	
 	public static List<String> getEnabledCustomersPrimaryContacts(){
-		ArrayList<String> outList = new ArrayList<String>();
-		for(Customer customer : Customer.allCustomers) {
-			if(customer.enabled){
-				outList.add(customer.primaryContact);
-			}
-		}
-		return outList;
+		return Customer.getEnabledCustomerField(new CustomerPrimaryContact());
 	}
 	
 	public static List<String> getEnabledCustomersDomains(){
-		ArrayList<String> outList = new ArrayList<String>();
-		for(Customer customer : Customer.allCustomers) {
-			if(customer.enabled){
-				outList.add(customer.domain);
-			}
-		}
-		return outList;
+		return Customer.getEnabledCustomerField(new CustomerDomain());
+	}
+
+	public static List<Customer> getEnabledCustomers(){
+		return Customer.getEnabledCustomerField(new CustomerAsCustomer());
 	}
 	
 	public static void main(String[] args){
