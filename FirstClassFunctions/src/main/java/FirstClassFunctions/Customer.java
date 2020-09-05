@@ -28,27 +28,67 @@ public class Customer {
 	}
 
 	public static List<String> getEnabledCustomersAddress(){
-		return Customer.getEnabledCustomerField(new CustomerAddress());
+		return Customer.getEnabledCustomerField(
+				new Function1<Customer, String>() {
+					@Override
+					public String call(Customer in1) {
+						return in1.address;
+					}
+				}
+		);
 	}
 	
 	public static List<String> getEnabledCustomersNames(){
-		return Customer.getEnabledCustomerField(new CustomerName());
+		return Customer.getEnabledCustomerField(
+				new Function1<Customer, String>() {
+					@Override
+					public String call(Customer in1) {
+						return in1.name;
+					}
+				}
+		);
 	}
 	
 	public static List<String> getEnabledCustomersStates(){
-		return Customer.getEnabledCustomerField(new CustomerState());
+		return Customer.getEnabledCustomerField(
+				new Function1<Customer, String>() {
+					@Override
+					public String call(Customer in1) {
+						return in1.state;
+					}
+				}
+		);
 	}
 	
 	public static List<String> getEnabledCustomersPrimaryContacts(){
-		return Customer.getEnabledCustomerField(new CustomerPrimaryContact());
+		return Customer.getEnabledCustomerField(
+				new Function1<Customer, String>() {
+					@Override
+					public String call(Customer in1) {
+						return in1.primaryContact;
+					}
+				}
+		);
 	}
 	
 	public static List<String> getEnabledCustomersDomains(){
-		return Customer.getEnabledCustomerField(new CustomerDomain());
+		return Customer.getEnabledCustomerField(
+				new Function1<Customer, String>() {
+					@Override
+					public String call(Customer in1) {
+						return in1.domain;
+					}
+				}
+		);
 	}
 
 	public static List<Customer> getEnabledCustomers(){
-		return Customer.getEnabledCustomerField(new CustomerAsCustomer());
+		return Customer.getEnabledCustomerField(new Function1<Customer, Customer>() {
+			@Override
+			public Customer call(Customer in1) {
+				return in1;
+			}
+		});
 	}
 	
 	public static void main(String[] args){
