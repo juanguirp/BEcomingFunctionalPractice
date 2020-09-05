@@ -90,6 +90,17 @@ public class Customer {
 			}
 		});
 	}
+
+	public static List<String> getEnabledCustomerEmails(final String someone){
+		return Customer.getEnabledCustomerField(
+				new Function1<Customer, String>() {
+					@Override
+					public String call(Customer in1) {
+						return someone + "@" + in1.domain;
+					}
+				}
+		);
+	}
 	
 	public static void main(String[] args){
 		System.out.println("Added no much beautiful example code into the class.");
