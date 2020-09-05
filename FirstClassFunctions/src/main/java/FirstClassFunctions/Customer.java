@@ -14,6 +14,28 @@ public class Customer {
 	public Boolean enabled = true;
 	
 	public Customer(){}
+
+	public static List<String> getEnabledCustomerField(String fieldName){
+		ArrayList<String> outList = new ArrayList<>();
+		for(Customer customer : Customer.allCustomers){
+			if(customer.enabled){
+				if(fieldName == "name"){
+					outList.add(customer.name);
+				}else if(fieldName == "state"){
+					outList.add(customer.state);
+				}else if(fieldName == "primaryContact"){
+					outList.add(customer.primaryContact);
+				}else if(fieldName == "domain"){
+					outList.add(customer.domain);
+				}else if(fieldName == "address"){
+					outList.add(customer.address);
+				}else{
+					throw new IllegalArgumentException("Unknow field");
+				}
+			}
+		}
+		return outList;
+	}
 	
 	public static List<String> getEnabledCustomersNames(){
 		ArrayList<String> outList = new ArrayList<String>();
