@@ -1,4 +1,4 @@
-package FirstClassFunctions;
+package BEcomingFunctional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,9 +134,5 @@ public class Customer {
                     }
                 }
         );
-    }
-
-    public static void main(String[] args) {
-        System.out.println("Added no much beautiful example code into the class.");
     }
 }
