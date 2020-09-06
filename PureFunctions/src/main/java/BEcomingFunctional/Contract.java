@@ -17,11 +17,23 @@ public class Contract {
 
     public static List<Contract> setContractForCustomer(final Boolean status,
                                                         Integer customer_id){
-            return Customer.map(
+            return FunctionalConcepts.map(
                 Customer.getCustomerById(Customer.allCustomers, customer_id),
                 new Function1<Customer, Contract>() {
                     public Contract call(Customer in1) {
                         return in1.contract.setEnabled(status);
+                    }
+                }
+        );
+    }
+
+    public static void setContractForCustomer(){
+        FunctionalConcepts.foreach(
+                Contract.setContractForCustomer(true, 1),
+                new Foreach1<Contract>() {
+                    @Override
+                    public void call(Contract in1) {
+                        System.out.println(in1.toString());
                     }
                 }
         );

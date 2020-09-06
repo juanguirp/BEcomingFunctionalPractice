@@ -34,36 +34,9 @@ public class Customer {
             Function1<Customer, B> function
     ) {
         ArrayList<B> outList = new ArrayList<>();
-        for (Customer customer : Customer.filter(Customer.allCustomers, test)) {
+        for (Customer customer : FunctionalConcepts.filter(Customer.allCustomers, test)) {
             if (test.call(customer)) {
                 outList.add(function.call(customer));
-            }
-        }
-        return outList;
-    }
-
-    public static <A1, B> List<B> map(List<A1> inList, Function1<A1, B> function){
-        List<B> outList = new ArrayList<>();
-        for (A1 obj: inList){
-            outList.add(function.call(obj));
-        }
-        return outList;
-    }
-
-    public static void foreach(List<Customer> inList, Foreach1<Customer> function){
-        for (Customer customer : inList) {
-            function.call(customer);
-        }
-    }
-
-    public static List<Customer> filter(
-            List<Customer> inList,
-            Function1<Customer, Boolean> test
-    ){
-        List<Customer> outList = new ArrayList<>();
-        for (Customer customer : inList) {
-            if(test.call(customer)){
-                outList.add(customer);
             }
         }
         return outList;
@@ -73,7 +46,7 @@ public class Customer {
             List<Customer> inList,
             final Integer customer_id
     ){
-        return Customer.filter(inList,
+        return FunctionalConcepts.filter(inList,
                 new Function1<Customer, Boolean>() {
             @Override
             public Boolean call(Customer in1) {
