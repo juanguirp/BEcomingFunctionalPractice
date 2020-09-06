@@ -26,4 +26,19 @@ public class Contract {
                 }
         );
     }
+
+    public Contract setBegin_date(Calendar begin_date) {
+        this.begin_date = begin_date;
+        return this;
+    }
+
+    public Contract setEnd_date(Calendar end_date) {
+        this.end_date = end_date;
+        return this;
+    }
+
+    public Contract setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
 }

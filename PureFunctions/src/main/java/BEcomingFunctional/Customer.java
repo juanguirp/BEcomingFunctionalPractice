@@ -168,4 +168,44 @@ public class Customer {
                 }
         );
     }
+
+    public Customer setId(Integer id) {
+        this.id = id;
+        return this;
+    }
+
+    public Customer setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Customer setAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public Customer setState(String state) {
+        this.state = state;
+        return this;
+    }
+
+    public Customer setPrimaryContact(String primaryContact) {
+        this.primaryContact = primaryContact;
+        return this;
+    }
+
+    public Customer setDomain(String domain) {
+        this.domain = domain;
+        return this;
+    }
+
+    public Customer setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
+    public Customer setContract(Contract contract) {
+        this.contract = contract;
+        return this;
+    }
 }
