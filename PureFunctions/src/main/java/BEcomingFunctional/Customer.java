@@ -34,7 +34,7 @@ public class Customer {
             Function1<Customer, B> function
     ) {
         ArrayList<B> outList = new ArrayList<>();
-        for (Customer customer : Customer.filter(test)) {
+        for (Customer customer : Customer.filter(Customer.allCustomers, test)) {
             if (test.call(customer)) {
                 outList.add(function.call(customer));
             }
@@ -42,11 +42,18 @@ public class Customer {
         return outList;
     }
 
+    public static void foreach(List<Customer> inList, Foreach1<Customer> function){
+        for (Customer customer : inList) {
+            function.call(customer);
+        }
+    }
+
     public static List<Customer> filter(
+            List<Customer> inList,
             Function1<Customer, Boolean> test
     ){
         List<Customer> outList = new ArrayList<>();
-        for (Customer customer : Customer.allCustomers) {
+        for (Customer customer : inList) {
             if(test.call(customer)){
                 outList.add(customer);
             }
@@ -54,8 +61,12 @@ public class Customer {
         return outList;
     }
 
-    public static List<Customer> getCustomerById(final Integer customer_id){
-        return Customer.filter(new Function1<Customer, Boolean>() {
+    public static List<Customer> getCustomerById(
+            List<Customer> inList,
+            final Integer customer_id
+    ){
+        return Customer.filter(inList,
+                new Function1<Customer, Boolean>() {
             @Override
             public Boolean call(Customer in1) {
                 return customer_id == in1.id;

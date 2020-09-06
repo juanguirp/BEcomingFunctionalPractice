@@ -15,13 +15,13 @@ public class Contract {
     }
 
     public static void setContractDisabledForCustomers(Integer customer_id){
-        for (Customer customer : Customer.getCustomerById(customer_id)) {
+        for (Customer customer : Customer.getCustomerById(Customer.allCustomers, customer_id)) {
             customer.contract.enabled = false;
         }
     }
 
     public static void setContractEnabledForCustomers(Integer customer_id){
-        for (Customer customer : Customer.getCustomerById(customer_id)) {
+        for (Customer customer : Customer.getCustomerById(Customer.allCustomers, customer_id)) {
                 customer.contract.enabled = true;
         }
     }
