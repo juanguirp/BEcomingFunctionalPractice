@@ -24,6 +24,7 @@ public class Customer {
     public String primaryContact = "";
     public String domain = "";
     public Boolean enabled = true;
+    public Contract contract;
 
     public Customer() {
     }
@@ -33,12 +34,33 @@ public class Customer {
             Function1<Customer, B> function
     ) {
         ArrayList<B> outList = new ArrayList<>();
-        for (Customer customer : Customer.allCustomers) {
+        for (Customer customer : Customer.filter(test)) {
             if (test.call(customer)) {
                 outList.add(function.call(customer));
             }
         }
         return outList;
+    }
+
+    public static List<Customer> filter(
+            Function1<Customer, Boolean> test
+    ){
+        List<Customer> outList = new ArrayList<>();
+        for (Customer customer : Customer.allCustomers) {
+            if(test.call(customer)){
+                outList.add(customer);
+            }
+        }
+        return outList;
+    }
+
+    public static List<Customer> getCustomerById(final Integer customer_id){
+        return Customer.filter(new Function1<Customer, Boolean>() {
+            @Override
+            public Boolean call(Customer in1) {
+                return customer_id == in1.id;
+            }
+        });
     }
 
     public static List<String> getDisabledCustomerNames() {
