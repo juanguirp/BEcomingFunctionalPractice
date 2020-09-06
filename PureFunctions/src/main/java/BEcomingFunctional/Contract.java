@@ -1,6 +1,7 @@
 package BEcomingFunctional;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class Contract {
     public Calendar begin_date;
@@ -14,14 +15,13 @@ public class Contract {
         this.end_date.add(Calendar.YEAR, 2);
     }
 
-    public static void setContractForCustomer(final Boolean status,
-                                              Integer customer_id){
-        Customer.foreach(
+    public static List<Contract> setContractForCustomer(final Boolean status,
+                                                        Integer customer_id){
+            return Customer.map(
                 Customer.getCustomerById(Customer.allCustomers, customer_id),
-                new Foreach1<Customer>() {
-                    @Override
-                    public void call(Customer in1) {
-                        in1.contract.enabled = status;
+                new Function1<Customer, Contract>() {
+                    public Contract call(Customer in1) {
+                        return in1.contract.setEnabled(status);
                     }
                 }
         );
