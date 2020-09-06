@@ -15,15 +15,27 @@ public class Contract {
     }
 
     public static void setContractDisabledForCustomers(Integer customer_id){
-        for (Customer customer : Customer.getCustomerById(Customer.allCustomers, customer_id)) {
-            customer.contract.enabled = false;
-        }
+        Customer.foreach(
+                Customer.getCustomerById(Customer.allCustomers, customer_id),
+                new Foreach1<Customer>() {
+                    @Override
+                    public void call(Customer in1) {
+                        in1.contract.enabled = false;
+                    }
+                }
+        );
     }
 
     public static void setContractEnabledForCustomers(Integer customer_id){
-        for (Customer customer : Customer.getCustomerById(Customer.allCustomers, customer_id)) {
-                customer.contract.enabled = true;
-        }
+        Customer.foreach(
+                Customer.getCustomerById(Customer.allCustomers, customer_id),
+                new Foreach1<Customer>() {
+                    @Override
+                    public void call(Customer in1) {
+                        in1.contract.enabled = true;
+                    }
+                }
+        );
     }
 
 }
