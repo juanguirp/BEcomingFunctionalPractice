@@ -42,6 +42,14 @@ public class Customer {
         return outList;
     }
 
+    public static <A1, B> List<B> map(List<A1> inList, Function1<A1, B> function){
+        List<B> outList = new ArrayList<>();
+        for (A1 obj: inList){
+            outList.add(function.call(obj));
+        }
+        return outList;
+    }
+
     public static void foreach(List<Customer> inList, Foreach1<Customer> function){
         for (Customer customer : inList) {
             function.call(customer);
