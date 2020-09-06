@@ -1,4 +1,4 @@
-package FirstClassFunctions;
+package BEcomingFunctional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,7 @@ public class Customer {
     public String primaryContact = "";
     public String domain = "";
     public Boolean enabled = true;
+    public Contract contract;
 
     public Customer() {
     }
@@ -33,12 +34,25 @@ public class Customer {
             Function1<Customer, B> function
     ) {
         ArrayList<B> outList = new ArrayList<>();
-        for (Customer customer : Customer.allCustomers) {
+        for (Customer customer : FunctionalConcepts.filter(Customer.allCustomers, test)) {
             if (test.call(customer)) {
                 outList.add(function.call(customer));
             }
         }
         return outList;
+    }
+
+    public static List<Customer> getCustomerById(
+            List<Customer> inList,
+            final Integer customer_id
+    ){
+        return FunctionalConcepts.filter(inList,
+                new Function1<Customer, Boolean>() {
+            @Override
+            public Boolean call(Customer in1) {
+                return customer_id == in1.id;
+            }
+        });
     }
 
     public static List<String> getDisabledCustomerNames() {
@@ -136,7 +150,43 @@ public class Customer {
         );
     }
 
-    public static void main(String[] args) {
-        System.out.println("Added no much beautiful example code into the class.");
+    public Customer setId(Integer id) {
+        this.id = id;
+        return this;
+    }
+
+    public Customer setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Customer setAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public Customer setState(String state) {
+        this.state = state;
+        return this;
+    }
+
+    public Customer setPrimaryContact(String primaryContact) {
+        this.primaryContact = primaryContact;
+        return this;
+    }
+
+    public Customer setDomain(String domain) {
+        this.domain = domain;
+        return this;
+    }
+
+    public Customer setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
+    public Customer setContract(Contract contract) {
+        this.contract = contract;
+        return this;
     }
 }
