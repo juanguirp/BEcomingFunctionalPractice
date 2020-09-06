@@ -14,28 +14,16 @@ public class Contract {
         this.end_date.add(Calendar.YEAR, 2);
     }
 
-    public static void setContractDisabledForCustomers(Integer customer_id){
+    public static void setContractForCustomer(final Boolean status,
+                                              Integer customer_id){
         Customer.foreach(
                 Customer.getCustomerById(Customer.allCustomers, customer_id),
                 new Foreach1<Customer>() {
                     @Override
                     public void call(Customer in1) {
-                        in1.contract.enabled = false;
+                        in1.contract.enabled = status;
                     }
                 }
         );
     }
-
-    public static void setContractEnabledForCustomers(Integer customer_id){
-        Customer.foreach(
-                Customer.getCustomerById(Customer.allCustomers, customer_id),
-                new Foreach1<Customer>() {
-                    @Override
-                    public void call(Customer in1) {
-                        in1.contract.enabled = true;
-                    }
-                }
-        );
-    }
-
 }
