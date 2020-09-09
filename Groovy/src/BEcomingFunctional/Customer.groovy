@@ -45,7 +45,7 @@ class Customer {
         return this
     }
 
-    Customer setContacts(Contact contacts){
+    Customer setContacts(Contact contacts) {
         this.contacts = contacts
         return this
     }
@@ -75,6 +75,11 @@ class Customer {
             }.each {contact -> contact.sendEmail(msg) }}
     }
 
-
-
+    public static void eachEnabledContact(Closure cls){
+        Customer.allCustomers.findAll
+                {customer -> customer.enabled && customer.contract.enabled }
+        .each {customer ->
+            customer.contacts.each(cls)
+        }
+    }
 }

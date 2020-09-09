@@ -17,11 +17,11 @@ class Contact {
         this.contact_id = contact_id
         this.firstName = firstName
         this.lastName = lastName
-        this.email=email
+        this.email = email
         this.enabled = enabled
     }
 
-    static void sendEmail(String msg){
+    static void sendEmail(String msg) {
 
     }
 
