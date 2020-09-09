@@ -1,46 +1,38 @@
+import BEcomingFunctional.Contact
 import Contract
 
 class Customer {
     static public ArrayList<Customer> allCustomers = new ArrayList<Customer>()
-    public Integer customer_id = 0
-    public String name = ""
-    public String address = ""
-    public String state = ""
-    public String primaryContact = ""
-    public String domain = ""
-    public Boolean enabled = true
-    public Contract contract
 
-    Customer() {}
+    public final Integer customer_id = 0
+    public final String name = ""
+    public final String address = ""
+    public final String state = ""
+    public final String primaryContact = ""
+    public final String domain = ""
+    public final Boolean enabled = true
+    public final Contract contract
+    public final List<Contact> contacts
 
-    Customer setCustomerId(Integer customer_id) {
+    Customer(
+            Integer customer_id,
+            String name,
+            String address,
+            String state,
+            String primaryContact,
+            String domain,
+            Boolean enabled,
+            Contract contract,
+            List<Contact> contacts) {
         this.customer_id = customer_id
-        return this
-    }
-
-    Customer setName(String name) {
         this.name = name
-        return this
-    }
-
-    Customer setState(String state) {
+        this.address = address
         this.state = state
-        return this
-    }
-
-    Customer setDomain(String domain) {
+        this.primaryContact = primaryContact
         this.domain = domain
-        return this
-    }
-
-    Customer setEnabled(Boolean enabled) {
         this.enabled = enabled
-        return this
-    }
-
-    Customer setContract(Contract contract) {
         this.contract = contract
-        return this
+        this.contacts = contacts
     }
 
     static def EnabledCustomer = { customer -> customer.enabled == true }
@@ -57,6 +49,78 @@ class Customer {
         Customer.allCustomers
                 .findAll(EnabledCustomer)
                 .collect(customer -> customer.name)
+    }
+
+    static void sendEnabledCustomersEmails(String msg) {
+        Customer.allCustomers.findAll(
+                { customer -> customer.enabled && customer.contract.enabled }
+        ).each { customer ->
+            customer.contacts.findAll {
+                contact -> contact.enabled
+            }.each { contact -> contact.sendEmail(msg) }
+        }
+    }
+
+    static void eachEnabledContact(Closure cls) {
+        Customer.allCustomers.findAll
+        { customer -> customer.enabled && customer.contract.enabled }
+                .each { customer ->
+                    customer.contacts.each(cls)
+                }
+    }
+
+    static List<Customer> updateContractForCustomerList(List<Integer> ids, Closure cls) {
+        Customer.allCustomers.collect { customer ->
+            if (ids.indexOf(customer.customer_id >= 0)) {
+                new Customer(
+                        customer.customer_id,
+                        customer.name,
+                        customer.state,
+                        customer.domain,
+                        customer.enabled,
+                        cls(customer.contract),
+                        customer.contacts
+                )
+            } else {
+                customer
+            }
+        }
+    }
+
+    static List<Customer> setContractForCustomerList(List<Integer> ids, Boolean status){
+        Customer.updateContractForCustomerList(ids, {
+            contract -> new Contract(contract.begin_date, contract.end_date, status)
+        })
+    }
+
+    static List<Customer> updateContact(Integer customer_id, Integer contact_id, Closure cls){
+        updateCustomerByIdList([customer_id],{
+            customer -> new Customer(
+                    customer.customer_id,
+                    customer.name,
+                    customer.state,
+                    customer.domain,
+                    customer.enabled,
+                    customer.contract,
+                    customer.contacts.collect{contact ->
+                        if(contact.contact_id == contact_id){
+                            cls(contact)
+                        } else {
+                            contact
+                        }
+                    }
+            )
+        })
+    }
+
+    static List<Customer> updateCustomerByIdList(List<Integer> ids, Closure cls){
+        Customer.allCustomers.collect{
+            customer -> if(ids.indexOf(customer.customer_id) >= 0){
+                cls(customer)
+            } else {
+                customer
+            }
+        }
     }
 
 }
