@@ -1,3 +1,4 @@
+import BEcomingFunctional.Contact
 import Contract
 
 class Customer {
@@ -10,6 +11,7 @@ class Customer {
     public String domain = ""
     public Boolean enabled = true
     public Contract contract
+    public List<Contact> contacts
 
     Customer() {}
 
@@ -43,6 +45,11 @@ class Customer {
         return this
     }
 
+    Customer setContacts(Contact contacts){
+        this.contacts = contacts
+        return this
+    }
+
     static def EnabledCustomer = { customer -> customer.enabled == true }
 
     static def DisabledCustomer = { customer -> customer.enabled == false }
@@ -58,5 +65,16 @@ class Customer {
                 .findAll(EnabledCustomer)
                 .collect(customer -> customer.name)
     }
+
+    static void sendEnabledCustomersEmails(String msg){
+        Customer.allCustomers.findAll(
+                {customer -> customer.enabled && customer.contract.enabled }
+        ).each {customer ->
+            customer.contacts.findAll {
+            contact -> contact.enabled
+            }.each {contact -> contact.sendEmail(msg) }}
+    }
+
+
 
 }
