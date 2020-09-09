@@ -6,14 +6,7 @@ class Contract {
     public final Calendar end_date
     public final Boolean enabled = true
 
-    Contract(Calendar begin_date) {
-        this.begin_date = begin_date
-        this.end_date = Calendar.getInstance()
-        this.end_date.setTimeInMillis(this.begin_date.getTimeInMillis())
-        this.end_date.add(Calendar.YEAR, 2)
-    }
-
-    Contract(
+    public Contract(
             Calendar begin_date,
             Calendar end_date,
             Boolean enabled
