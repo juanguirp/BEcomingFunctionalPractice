@@ -124,15 +124,16 @@ class Customer {
     }
 
     public static int countEnabledCustomersWithNoEnabledContacts(
-            List<Customer> customers
+            List<Customer> customers,
+            int sum
     ) {
         if(customers.isEmpty()){
-            return 0
+            return sum
         } else {
             int addition = (customers.head().enabled && (customers.head().contacts.find(
                     {contact -> contact.enabled}
             ) == null)) ? 1 : 0
-            return  addition + countEnabledCustomersWithNoEnabledContacts(customers.tail())
+            return  countEnabledCustomersWithNoEnabledContacts(customers.tail(), sum + addition)
         }
     }
 

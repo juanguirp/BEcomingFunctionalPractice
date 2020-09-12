@@ -6,7 +6,15 @@ class FunctionalThings {
         if(list.isEmpty()){
             return []
         } else {
-            return (cls(list.head()) ? [list.head()] : []) + Filter(list.tail(), cls)
+            return (cls(list.head()) ? [list.head()] : []) + FilterWithRecursion(list.tail(), cls)
+        }
+    }
+
+    def <T> List<T> FilterWithTailRecursion(List<T> list, List<T> output, Closure cls){
+        if(list.isEmpty()){
+            return output
+        } else {
+            return FilterWithTailRecursion(list.tail(), cls(list.head()) ? output + list.head() : output, cls)
         }
     }
 }
