@@ -123,4 +123,17 @@ class Customer {
         }
     }
 
+    public static int countEnabledCustomersWithNoEnabledContacts(
+            List<Customer> customers
+    ) {
+        if(customers.isEmpty()){
+            return 0
+        } else {
+            int addition = (customers.head().enabled && (customers.head().contacts.find(
+                    {contact -> contact.enabled}
+            ) == null)) ? 1 : 0
+            return  addition + countEnabledCustomersWithNoEnabledContacts(customers.tail())
+        }
+    }
+
 }
