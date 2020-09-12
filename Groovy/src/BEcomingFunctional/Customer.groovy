@@ -138,4 +138,6 @@ class Customer {
         }
     }
 
+    @Lazy public volatile List<Contact> enabledContacts = contacts.findAll(contact -> contact.enabled)
+
 }
