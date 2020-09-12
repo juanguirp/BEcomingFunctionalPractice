@@ -27,5 +27,5 @@ class Contact(val contact_id : Integer,
              val email : String,
              val enabled : Boolean)
 {
-  def sendEmail() = { new Email(email, "subject", "body").send()}
+  def sendEmail() = { new Email(this.email, "subject", "body", true, this.firstName).send()}
 }
