@@ -123,6 +123,7 @@ class Customer {
         }
     }
 
+    // Todo: trampoline
     public static int countEnabledCustomersWithNoEnabledContacts(
             List<Customer> customers,
             int sum
