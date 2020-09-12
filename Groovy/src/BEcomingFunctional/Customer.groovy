@@ -123,4 +123,19 @@ class Customer {
         }
     }
 
+    // Todo: trampoline
+    public static int countEnabledCustomersWithNoEnabledContacts(
+            List<Customer> customers,
+            int sum
+    ) {
+        if(customers.isEmpty()){
+            return sum
+        } else {
+            int addition = (customers.head().enabled && (customers.head().contacts.find(
+                    {contact -> contact.enabled}
+            ) == null)) ? 1 : 0
+            return  countEnabledCustomersWithNoEnabledContacts(customers.tail(), sum + addition)
+        }
+    }
+
 }
