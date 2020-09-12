@@ -116,11 +116,13 @@ object Customer{
   }
 
   def countEnabledCustomersWithNoEnabledContacts(customers: List[Customer], sum: Integer) : Integer = {
-    if( customers.isEmpty ) { sum }
-    else {
-      val addition = if(customers.head.enabled && customers.head.contacts.exists({contact => contact.enabled}))
-        {1} else {0}
-      countEnabledCustomersWithNoEnabledContacts(customers.tail, addition + sum)
+    customers match {
+      case List() => sum
+      case Customer(_,_,_,_,true,_,cont) :: custs =>
+        countEnabledCustomersWithNoEnabledContacts(custs, sum)
+      case Customer(_,_,_,_,true,_,cont) :: custs if cont.exists({contact => contact.enabled}) =>
+        countEnabledCustomersWithNoEnabledContacts(custs, sum + 1)
+      case cust :: custs => countEnabledCustomersWithNoEnabledContacts(custs, sum)
     }
   }
 }
