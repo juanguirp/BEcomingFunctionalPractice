@@ -1,5 +1,30 @@
+import java.util.Calendar
+
 object Customer{
   val allCustomers = List[Customer]()
+
+  def createCustomer(name: String, state: String, domain: String): Option[Customer] = {
+
+    def error(message: String) : Option[Customer] = {
+      println(message)
+      None
+    }
+
+    (name, state, domain) match {
+      case ("", _, _) => error("Name cannot be blank")
+      case (_, "", _) => error("State cannot be blank")
+      case (_, _, "") => error("Domain cannot be blank")
+      case _ => new Some[Customer](new Customer(
+        0,
+        name,
+        state,
+        domain,
+        true,
+        new Contract(Calendar.getInstance, true),
+        List())
+      )
+    }
+  }
 
   def EnabledCustomer(customer: Customer) : Boolean = customer.enabled == true
   def DisabledCustomer(customer: Customer) : Boolean = customer.enabled == false
@@ -44,18 +69,18 @@ object Customer{
 
   def updateCustomerByIdList(initialIds: List[Customer], ids: List[Integer], cls: Customer => Customer) : List[Customer] =
     {
-      if(ids.size <= 0){
-        initialIds
-      } else if(initialIds.size <= 0) {
-        List()
-      }else {
-        val precust = initialIds.find(cust => cust.customer_id == ids(0))
-        val cust = if(precust.isEmpty) { List() } else {List(cls(precust.get))}
-        cust ::: updateCustomerByIdList(
-          initialIds.filter(cust => cust.customer_id == ids(0)),
-          ids.drop(1),
-          cls
-        )
+      (initialIds, ids) match {
+        case (List(), _) => initialIds
+        case (_, List()) => initialIds
+        case (_, id :: tailIds) => {
+          initialIds.find(cust => cust.customer_id == id) match {
+            case None => updateCustomerByIdList(initialIds, tailIds, cls)
+            case Some(cust) => updateCustomerByIdList(
+              initialIds.filter(cust => cust.customer_id == id),
+              tailIds, cls
+            )
+          }
+        }
       }
     }
 
@@ -91,16 +116,18 @@ object Customer{
   }
 
   def countEnabledCustomersWithNoEnabledContacts(customers: List[Customer], sum: Integer) : Integer = {
-    if( customers.isEmpty ) { sum }
-    else {
-      val addition = if(customers.head.enabled && customers.head.contacts.exists({contact => contact.enabled}))
-        {1} else {0}
-      countEnabledCustomersWithNoEnabledContacts(customers.tail, addition + sum)
+    customers match {
+      case List() => sum
+      case Customer(_,_,_,_,true,_,cont) :: custs =>
+        countEnabledCustomersWithNoEnabledContacts(custs, sum)
+      case Customer(_,_,_,_,true,_,cont) :: custs if cont.exists({contact => contact.enabled}) =>
+        countEnabledCustomersWithNoEnabledContacts(custs, sum + 1)
+      case cust :: custs => countEnabledCustomersWithNoEnabledContacts(custs, sum)
     }
   }
 }
 
-class Customer(val customer_id: Integer,
+case class Customer(val customer_id: Integer,
               val name: String,
               val state: String,
               val domain: String,
